@@ -6,7 +6,10 @@ import backgroundImage from '../assets/background_image.png';
 export default class Start extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '' }; 
+    this.state = { 
+      name: '',
+      backgroundColor: '#090C08',
+    }; 
   }
 
   render() {
@@ -24,16 +27,29 @@ export default class Start extends Component {
               <View style={ styles.backgroundColorContainer }>
                 <Text style={ styles.backgroundColorText }>Choose Background Color:</Text>
                 <View style={ styles.colorSelectorContainer }>
-                  <Pressable style={ [styles.backgroundColorCircles, {backgroundColor: '#090C08'}] }></Pressable>
-                  <Pressable style={ [styles.backgroundColorCircles, {backgroundColor: '#474056'}] }></Pressable>
-                  <Pressable style={ [styles.backgroundColorCircles, {backgroundColor: '#8A95A5'}] }></Pressable>
-                  <Pressable style={ [styles.backgroundColorCircles, {backgroundColor: '#B9C6AE'}] }></Pressable>
+                  <Pressable 
+                    style={ [styles.backgroundColorCircles, {backgroundColor: '#090C08'}] }
+                    onPress={ () => this.setState({ backgroundColor: '#090C08'})}
+                  ></Pressable>
+                  <Pressable 
+                    style={ [styles.backgroundColorCircles, {backgroundColor: '#474056'}] }
+                    onPress={ () => this.setState({ backgroundColor: '#474056'})}
+                  ></Pressable>
+                  <Pressable 
+                    style={ [styles.backgroundColorCircles, {backgroundColor: '#8A95A5'}] }
+                    onPress={ () => this.setState({ backgroundColor: '#8A95A5'})}
+                  ></Pressable>
+                  <Pressable 
+                    style={ [styles.backgroundColorCircles, {backgroundColor: '#B9C6AE'}] }
+                    onPress={ () => this.setState({ backgroundColor: '#B9C6AE'})}
+                  ></Pressable>
                 </View>
               </View>
               <Pressable
                 style={ styles.goChatButton }
-                onPress={ () => this.props.navigation.navigate('Chat', { name: this.state.name }) }
+                onPress={ () => this.props.navigation.navigate('Chat', { name: this.state.name, backgroundColor: this.state.backgroundColor }) }
               >
+                {/* , backgroundColor: this.state.backgroundColor */}
                 <Text style={ styles.buttonText}>Start Chatting</Text>
               </Pressable>
             </View>
