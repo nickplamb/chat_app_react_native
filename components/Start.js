@@ -24,9 +24,10 @@ export default class Start extends Component {
                 placeholder="Your name"
                 onChangeText={ (text) => this.setState({ name: text }) }
               />
-              <View style={ styles.backgroundColorContainer }>
-                <Text style={ styles.backgroundColorText }>Choose Background Color:</Text>
-                <View style={ styles.colorSelectorContainer }>
+              <View style={ styles.colorSelectorContainer }>
+                <Text style={ styles.colorSelectorText }>Choose Background Color:</Text>
+                <View style={ styles.colorSelectorCirclesContainer }>
+                  {/* Colored circles are pressable, they change backgroundColor state onPress */}
                   <Pressable 
                     style={ [styles.backgroundColorCircles, {backgroundColor: '#090C08'}] }
                     onPress={ () => this.setState({ backgroundColor: '#090C08'})}
@@ -45,12 +46,12 @@ export default class Start extends Component {
                   ></Pressable>
                 </View>
               </View>
+              {/* I used Pressable API instead of button because button cannot be passed style prop and handles color attribute differently between IOS and android */}
               <Pressable
                 style={ styles.goChatButton }
                 onPress={ () => this.props.navigation.navigate('Chat', { name: this.state.name, backgroundColor: this.state.backgroundColor }) }
               >
-                {/* , backgroundColor: this.state.backgroundColor */}
-                <Text style={ styles.buttonText}>Start Chatting</Text>
+                <Text style={ styles.chatButtonText}>Start Chatting</Text>
               </Pressable>
             </View>
           </View>
@@ -104,16 +105,16 @@ const styles =  StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1,
   },
-  backgroundColorContainer: {
+  colorSelectorContainer: {
     // backgroundColor: 'orange',
   },
-  backgroundColorText: {
+  colorSelectorText: {
     fontSize: 16,
     fontWeight: '300',
     color: '#757083',
     opacity: 100,
   },
-  colorSelectorContainer: {
+  colorSelectorCirclesContainer: {
     flexDirection: 'row'
   },
   backgroundColorCircles: {
@@ -128,7 +129,7 @@ const styles =  StyleSheet.create({
     height: 60,
     backgroundColor: '#757083',
   },
-  buttonText: {
+  chatButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#FFF',
