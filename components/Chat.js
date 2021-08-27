@@ -3,9 +3,12 @@ import { KeyboardAvoidingView, Platform, View, StyleSheet, Text } from 'react-na
 import { Bubble, InputToolbar, GiftedChat } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+import MapView from 'react-native-maps';
 
 import firebase from 'firebase';
 import 'firebase/firestore';
+
+import CustomActions from './CustomActions';
 
 export default class Chat extends Component {
   constructor(props) {
@@ -104,6 +107,8 @@ export default class Chat extends Component {
         text: data.text,
         createdAt: data.createdAt.toDate(),
         user: data.user,
+        image: data.image,
+        location: data.location,
       });
     });
 
@@ -186,7 +191,7 @@ export default class Chat extends Component {
         { ...props }
       />
     );
-  }
+  };
 
   renderBubble(props) {
     return(
@@ -201,17 +206,38 @@ export default class Chat extends Component {
           }
         }}
       />
-    )
+    );
+  };
+
+  renderCustomActions(props) {
+    return <CustomActions { ...props } />;
+  };
+
+  renderCustomView(props) {
+    const { currentMessage } = props;
+    if(currentMessage.location) {
+      return (
+        <MapView 
+          style={ styles.mapView }
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    };
+    return null;
   }
 
   render() {
-
-    
     return (
         <View style={ styles.containter }>
           <GiftedChat
             renderBubble={ this.renderBubble.bind(this) }
             renderInputToolbar={ this.renderInputToolbar.bind(this) }
+            renderActions={ this.renderCustomActions }
             messages={ this.state.messages }
             onSend={ message => this.addMessage(message) }
             user={{
@@ -236,5 +262,11 @@ const styles =  StyleSheet.create({
   },
   text: {
     color: '#FFF'
-  }
+  },
+  mapView: {
+    width: 150,
+    height: 100,
+    borderRadius: 13,
+    margin: 3
+  },
 });
