@@ -40,24 +40,30 @@ export default class CustomActions extends Component {
   /*
   *
   *
-  * Functions for picking an image from media library and taking a picture.
+  * Functions for picking an image from media library, taking a picture, and uploading it.
   */
   // user picks an image from their media library
   pickImage = async () => {
     const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (granted) {
-      let chosenImage = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [1,1],
-        allowsEditing: true,
-      })
-        .catch(error => console.log(error));
+    // if permission is not given
+    if (!granted) {
+      alert('You have not given permission to use the media library. Please allow access in your phones permissions settings');
+      return;
+    };
 
-      if(!chosenImage.cancelled) {
-        const imageUrl = await this.uploadImage(chosenImage.uri)
-        this.props.onSend({ image: imageUrl })
-      };
+    // launch media library
+    let chosenImage = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [1,1],
+      allowsEditing: true,
+    })
+      .catch(error => console.log(error));
+
+    // upload image and send url as message
+    if(!chosenImage.cancelled) {
+      const imageUrl = await this.uploadImage(chosenImage.uri)
+      this.props.onSend({ image: imageUrl })
     };
   };
   
@@ -66,23 +72,27 @@ export default class CustomActions extends Component {
     const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
     const mediaPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
+    // if permissions are not granted
     if (!cameraPermission.granted || !mediaPermission.granted) {
-      alert('You have not given permission to use the camera or media library. Please allow permissions in your phones permissions settings.')
+      alert('You have not given permission to use the camera or media library. Please allow permissions in your phones permissions settings.');
       return;
     };
 
+    // launch camera
     let newImage = await ImagePicker.launchCameraAsync({
       aspect: [1,1],
       allowsEditing: true,
     })
       .catch(error => console.log(error));
 
+    // upload image and send url as message
     if(!newImage.cancelled) {
       const imageUrl = await this.uploadImage(newImage.uri)
       this.props.onSend({ image: imageUrl });
     };
   };
 
+  // user can upload and image from their media library
   uploadImage = async (uri) => {
     const imageBlob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -98,14 +108,16 @@ export default class CustomActions extends Component {
       xhr.send(null);
     });
 
+    // Split file path by '/' to isolate the file name.
     const imageUriAsArray = uri.split('/');
     const imageName = imageUriAsArray[imageUriAsArray.length - 1];
 
+    // upload image to firebase storage as a blob
     const storageReference = firebase.storage().ref().child(`images/${imageName}`);
     const snapshot = await storageReference.put(imageBlob);
-
     imageBlob.close();
 
+    // get the image's url from firestore and return it.
     return await snapshot.ref.getDownloadURL();
   }
 
