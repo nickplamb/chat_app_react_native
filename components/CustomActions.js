@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
 import firebase from 'firebase';
 import firestore from 'firebase';
 import 'firebase/firestore';
@@ -29,7 +30,7 @@ export default class CustomActions extends Component {
             return this.takePhoto();
           case 2:
             console.log('user wants to get their location');
-            return;
+            return this.getCurrentLocation();
           default:
             return;
         }
@@ -119,7 +120,31 @@ export default class CustomActions extends Component {
 
     // get the image's url from firestore and return it.
     return await snapshot.ref.getDownloadURL();
-  }
+  };
+
+  /**
+   * user can get their location and share it.
+   * @returns 
+   */
+  getCurrentLocation = async () => {
+    const { granted } = await Location.requestForegroundPermissionsAsync();
+
+    if (!granted) {
+      alert('You have not given permission to use location services. Please allow permissions in your phones permissions settings.');
+      return;
+    };
+
+    let currentLocation = await Location.getCurrentPositionAsync().catch(error => console.log(error));
+
+    if(currentLocation) {
+      this.props.onSend({
+        location: {
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude
+        }
+      });
+    };
+  };
 
   render() {
     return(
