@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Platform, View, StyleSheet, Text } from 'react-na
 import { Bubble, InputToolbar, GiftedChat } from 'react-native-gifted-chat';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 import firebase from 'firebase';
 import 'firebase/firestore';
@@ -226,8 +226,15 @@ export default class Chat extends Component {
             longitude: currentMessage.location.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-          }}
-        />
+          }}>
+            <Marker 
+              coordinate={{
+                latitude: currentMessage.location.latitude,
+                longitude: currentMessage.location.longitude,
+              }}
+              title="I'm here!"
+            />
+          </MapView>
       );
     };
     return null;
@@ -240,6 +247,7 @@ export default class Chat extends Component {
             renderBubble={ this.renderBubble.bind(this) }
             renderInputToolbar={ this.renderInputToolbar.bind(this) }
             renderActions={ this.renderCustomActions }
+            renderCustomView={ this.renderCustomView }
             messages={ this.state.messages }
             onSend={ message => this.addMessage(message) }
             user={{
