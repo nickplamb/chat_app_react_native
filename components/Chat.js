@@ -139,6 +139,7 @@ export default class Chat extends Component {
 
   /*
   *
+  *
   * Functions for saving to mobile local storage with AsyncStorage
   */
   // retrieve messages from AsyncStorage
@@ -178,6 +179,7 @@ export default class Chat extends Component {
   };
 
   /*
+  *
   *
   * Render props for Gifted Chat
   */
