@@ -19,7 +19,7 @@ This app was created to learn React Native, mobile development, and webSockets f
 
 ## Requirements
 
-* Node v14.7.4 or above
+* Node v14.17.4 or above
 * expo-cli
 * An android emulator or iOS simulator, or a smartphone with the Expo app.
 
@@ -59,23 +59,38 @@ Expo has a great [guide](https://docs.expo.dev/workflow/android-studio-emulator/
 This app uses the WebSocket Protocol with Cloud Firestore for its real time database.
 
 * Create the DB and collection
-  * Sign into [Google Firebase](https://firebase.google.com/), click on "Go to console" and click "Create Project. Name the project whatever you like.
-  * Once this is done, click on "Develop" in the sidebar and then "Cloud Firestore" and then click "Create Database"
-  * Create the database in production mode or test mode, depending on your needs (test mode has no security outside of the database reference key).
-  * Create a collection in the newly created DB.
+  * Sign into [Google Firebase](https://firebase.google.com/), click on "Go to console" and click "Create Project". Name the project whatever you like.
+  * Once this is done, click on "Build" in the sidebar and then "Firestore Database" and then click "Create Database".
+  * Create the database in production mode or test mode, depending on your needs (test mode has no security outside of the database reference key). Select an appropriate region for your apps users.
+  * Create a collection in the newly created DB. At the top of **components/Chat.js**, just below the imports, set the **databaseCollectionName** to the name of your new collection.
+
+    ```javascript
+    const databaseCollectionName = "your collection name here"
+    ```
+
 * Connect the app to your DB
   * Click the gear icon to open your "Project Settings", navigate to the "General" tab and under the "Your apps" section select "Firestore for Web" (</> icon.).
   * Copy the config object
 
     ```javascript
-    var firebaseConfig = {...}
+    const firebaseConfig = {...}
     ```
 
-  * This is the config that allows the chat app to connect to your database. Use this to replace the config object in the **constructor** function of the **Chat** class in **components/Chat.js**
+  * This is the config that allows the chat app to connect to your database. Use this to replace the firebaseConfig object at the top of **components/Chat.js**, just below the imports.
 
 * DB Authentication
   * In order for the users to see which messages are theirs they must be authenticated by the app. For development purposes **anonymous** authentication will work just fine, but you may select another option and configure it yourself.
-  * From the Develop section of sidebar in the Firebase console select "Authentication". On the screen that appears select "Set up sign-in method" and enable "Anonymous" authentication.
+  * From the "Build" section of sidebar in the Firebase console select "Authentication". Select "Get started".
+  * Under the "Sign-in method" tab select "Anonymous" from the "Native providers" column. Click save.
+    * If a different authentication method is desired, the logic in the **componentDidMount** method of **components/Chat.js** will have to be customized for that authentication method.
+
+### Start the App
+
+```console
+npm start
+```
+
+This will start up Expo's development server which will allow you to run the app from the web browser, iOS simulator, Android emulator, or from a smartphone using the Expo app and the QR code provided by the dev server.
 
 ### Remove Expo warning "Animated.event now requires a second argument for options"
 
