@@ -10,6 +10,23 @@ import 'firebase/firestore';
 
 import CustomActions from './CustomActions';
 
+
+/**
+ * 
+ * Customize these variables for your Database
+ */
+const databaseCollectionName = 'messages';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCV3EFBY9Qir3KZsoScbqDQc2SpcJbwEFc",
+  authDomain: "chat-app-d5e57.firebaseapp.com",
+  projectId: "chat-app-d5e57",
+  storageBucket: "chat-app-d5e57.appspot.com",
+  messagingSenderId: "84291303167",
+  appId: "1:84291303167:web:fcc3d29b3ad5c6514a7eca",
+  measurementId: "G-W0PPFEK4WE"
+};
+
 export default class Chat extends Component {
   constructor(props) {
     super(props);
@@ -23,15 +40,6 @@ export default class Chat extends Component {
       backgroundColor: '',
     }
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCV3EFBY9Qir3KZsoScbqDQc2SpcJbwEFc",
-      authDomain: "chat-app-d5e57.firebaseapp.com",
-      projectId: "chat-app-d5e57",
-      storageBucket: "chat-app-d5e57.appspot.com",
-      messagingSenderId: "84291303167",
-      appId: "1:84291303167:web:fcc3d29b3ad5c6514a7eca",
-      measurementId: "G-W0PPFEK4WE"
-    };
 
     // Initialize Firebase
     if(!firebase.apps.length) {
@@ -40,7 +48,7 @@ export default class Chat extends Component {
     }
     
     // reference to messages collection on firebase
-    this.referenceMessages = firebase.firestore().collection('messages');
+    this.referenceMessages = firebase.firestore().collection(databaseCollectionName);
   };
 
   async componentDidMount() {
