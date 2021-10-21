@@ -3,16 +3,25 @@ import { Button, Text, View, StyleSheet, TextInput, ImageBackground, Pressable }
 
 import backgroundImage from '../assets/background_image.png';
 
+const backgroundColorChoices = {
+  'black':'#090C08',
+  'purple':'#474056',
+  'grey':'#8A95A5',
+  'green':'#B9C6AE'
+}
+
 export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       name: '',
-      backgroundColor: '#090C08',
+      backgroundColor: backgroundColorChoices.black,
     }; 
   }
 
   render() {
+    const selectedColor = this.state.backgroundColor;
+
     return (
       <View style={ styles.containter }>
         <ImageBackground source={ backgroundImage } resizeMode='cover' style={ styles.imageBackground } >
@@ -29,20 +38,36 @@ export default class Start extends Component {
                 <View style={ styles.colorSelectorCirclesContainer }>
                   {/* Colored circles are pressable, they change backgroundColor state onPress */}
                   <Pressable 
-                    style={ [styles.backgroundColorCircles, {backgroundColor: '#090C08'}] }
-                    onPress={ () => this.setState({ backgroundColor: '#090C08'})}
+                    style={ [
+                        styles.backgroundColorCircles, 
+                        {backgroundColor: backgroundColorChoices.black}, 
+                        backgroundColorChoices.black === selectedColor ? styles.selectedBackgroundCircle : ''
+                      ] }
+                    onPress={ () => this.setState({ backgroundColor: backgroundColorChoices.black})}
                   ></Pressable>
                   <Pressable 
-                    style={ [styles.backgroundColorCircles, {backgroundColor: '#474056'}] }
-                    onPress={ () => this.setState({ backgroundColor: '#474056'})}
+                    style={ [
+                      styles.backgroundColorCircles, 
+                      {backgroundColor: backgroundColorChoices.purple}, 
+                      backgroundColorChoices.purple === selectedColor? styles.selectedBackgroundCircle : ''
+                    ] }
+                    onPress={ () => this.setState({ backgroundColor: backgroundColorChoices.purple})}
                   ></Pressable>
                   <Pressable 
-                    style={ [styles.backgroundColorCircles, {backgroundColor: '#8A95A5'}] }
-                    onPress={ () => this.setState({ backgroundColor: '#8A95A5'})}
+                    style={ [
+                      styles.backgroundColorCircles, 
+                      {backgroundColor: backgroundColorChoices.grey}, 
+                      backgroundColorChoices.grey === selectedColor? styles.selectedBackgroundCircle : ''
+                    ] }
+                    onPress={ () => this.setState({ backgroundColor: backgroundColorChoices.grey})}
                   ></Pressable>
                   <Pressable 
-                    style={ [styles.backgroundColorCircles, {backgroundColor: '#B9C6AE'}] }
-                    onPress={ () => this.setState({ backgroundColor: '#B9C6AE'})}
+                    style={ [
+                      styles.backgroundColorCircles, 
+                      {backgroundColor: backgroundColorChoices.green}, 
+                      selectedColor === backgroundColorChoices.green ? styles.selectedBackgroundCircle : ''
+                    ] }
+                    onPress={ () => this.setState({ backgroundColor: backgroundColorChoices.green})}
                   ></Pressable>
                 </View>
               </View>
@@ -91,7 +116,6 @@ const styles =  StyleSheet.create({
   },
   innerInputContainer: {
     justifyContent: 'space-between',
-    // backgroundColor: 'red',
     width: '88%',
     height: '88%',
   },
@@ -104,9 +128,6 @@ const styles =  StyleSheet.create({
     height: 50,
     borderColor: 'grey',
     borderWidth: 1,
-  },
-  colorSelectorContainer: {
-    // backgroundColor: 'orange',
   },
   colorSelectorText: {
     fontSize: 16,
@@ -122,6 +143,10 @@ const styles =  StyleSheet.create({
     height: 50,
     borderRadius: 25,
     margin: 8,
+  },
+  selectedBackgroundCircle: {
+    borderColor: '#757083',
+    borderWidth: 7, 
   },
   goChatButton: {
     alignItems: 'center',
