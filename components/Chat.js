@@ -261,7 +261,7 @@ export default class Chat extends Component {
             user={{
               _id: this.state.user._id,
               name: this.state.user.name,
-              avatar: 'https://placeimg.com/140/140/any',
+              avatar: 'https://placeimg.com/140/140/people',
             }} 
             messagesContainerStyle={{ backgroundColor: this.state.backgroundColor }}
           />

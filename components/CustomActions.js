@@ -123,8 +123,9 @@ export default class CustomActions extends Component {
   };
 
   /**
+   * 
+   * 
    * user can get their location and share it.
-   * @returns 
    */
   getCurrentLocation = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
