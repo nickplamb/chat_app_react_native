@@ -99,3 +99,9 @@ This is an optional step and only removes a [warning](https://github.com/FaridSa
 There is currently a [Pull request](https://github.com/FaridSafi/react-native-gifted-chat/pull/2078) to fix this minor issue but until it is merged this workaround can be used.
 
 * navigate to **node_modules/react-native-gifted-chat/lib/MessageImage.js** and change the import for "react-native-lightbox" to "react-native-lightbox-v2".
+
+### Note about troubleshooting in the web browser
+
+Currently the geolocation option causes the app the throw errors and crash, this is due to the app not having access the google maps without Android or IOS.
+I believe this can be remedied with a package called [react-native-web-maps](https://github.com/react-native-web-community/react-native-web-maps).
+I have not tested this but according to it's docs it should be a simple implementation if desired.
